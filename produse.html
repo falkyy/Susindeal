@@ -201,10 +201,10 @@
   };
   // EDIT-PRODUSE: prețul, pasul (cu cât crește la +) și unitatea, în aceeași ordine ca în cardurile de sus.
   var PROD=[
-    {n:["Telemea de vacă","Cow's milk cheese (telemea)"], price:36, step:0.5, unit:["kg","kg"]},
+    {n:["Telemea de vacă","Cow's milk cheese (telemea)"], price:36, step:1,   unit:["kg","kg"]},
     {n:["Unt de casă","Homemade butter"],                  price:25, step:1,   unit:["× 250 g","× 250 g"]},
     {n:["Lapte de vacă","Cow's milk"],                     price:9,  step:1,   unit:["l","l"], opts:[0,2,4,6]},
-    {n:["Iaurt de casă","Homemade yogurt"],                price:18, step:0.5, unit:["kg","kg"]}
+    {n:["Iaurt de casă","Homemade yogurt"],                price:18, step:1,   unit:["kg","kg"]}
   ];
   var MAX=20, qty=[0,0,0,0], lang="ro";
   function L(ro,en){return lang==="en"?en:ro;}
