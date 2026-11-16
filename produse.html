@@ -203,7 +203,7 @@
   var PROD=[
     {n:["Telemea de vacă","Cow's milk cheese (telemea)"], price:36, step:0.5, unit:["kg","kg"]},
     {n:["Unt de casă","Homemade butter"],                  price:25, step:1,   unit:["× 250 g","× 250 g"]},
-    {n:["Lapte de vacă","Cow's milk"],                     price:9,  step:1,   unit:["l","l"]},
+    {n:["Lapte de vacă","Cow's milk"],                     price:9,  step:1,   unit:["l","l"], opts:[0,2,4,6]},
     {n:["Iaurt de casă","Homemade yogurt"],                price:18, step:0.5, unit:["kg","kg"]}
   ];
   var MAX=20, qty=[0,0,0,0], lang="ro";
@@ -216,7 +216,7 @@
       var i=+box.getAttribute("data-i"), p=PROD[i], q=qty[i];
       box.innerHTML='<button type="button" class="minus" aria-label="'+L("Mai puțin","Less")+' – '+p.n[k]+'"'+(q<=0?' disabled':'')+'>−</button>'+
         '<output class="'+(q?'':'zero')+'" aria-live="polite">'+(q?num(q)+' '+p.unit[k]:L("0 – adaugă","0 – add"))+'</output>'+
-        '<button type="button" class="plus" aria-label="'+L("Mai mult","More")+' – '+p.n[k]+'"'+(q>=MAX?' disabled':'')+'>+</button>';
+        '<button type="button" class="plus" aria-label="'+L("Mai mult","More")+' – '+p.n[k]+'"'+(q>=(p.opts?p.opts[p.opts.length-1]:MAX)?' disabled':'')+'>+</button>';
       box.closest(".card").classList.toggle("picked",q>0);
     });
     PROD.forEach(function(p,i){if(qty[i]>0){var s=qty[i]*p.price;tot+=s;
@@ -233,7 +233,9 @@
   document.addEventListener("click",function(e){
     var b=e.target.closest(".qty button"); if(!b)return;
     var i=+b.parentNode.getAttribute("data-i"), p=PROD[i];
-    qty[i]=Math.max(0,Math.min(MAX,Math.round((qty[i]+(b.classList.contains("plus")?p.step:-p.step))*10)/10));
+    var up=b.classList.contains("plus");
+    if(p.opts){var j=p.opts.indexOf(qty[i]);if(j<0)j=0;qty[i]=p.opts[Math.max(0,Math.min(p.opts.length-1,j+(up?1:-1)))];}
+    else qty[i]=Math.max(0,Math.min(MAX,Math.round((qty[i]+(up?p.step:-p.step))*10)/10));
     var cls=b.className; renderOrder();
     var again=b.parentNode.querySelector("."+cls.split(" ")[0]); if(again&&!again.disabled)again.focus();
     hideMsgs();
